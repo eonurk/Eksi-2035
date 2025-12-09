@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ekşi sözlük - kutsal bilgi kaynağı</title>
+    <style>
+        /* RESET & BASE STYLES */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Source Sans Pro', Arial, sans-serif;
+            background-color: #e5e5e5; /* Standard light mode background */
+            color: #333;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* HEADER */
+        header {
+            background-color: #fff;
+            height: 50px;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .logo {
+            font-weight: bold;
+            font-size: 22px;
+            color: #5fba57; /* The iconic green */
+            letter-spacing: -0.5px;
+        }
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+            max-width: 600px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .user-menu {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: #888;
+        }
+        .user-menu span:hover { color: #5fba57; cursor: pointer; }
+
+        /* LAYOUT GRID */
+        .container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            margin-top: 50px;
+            height: calc(100vh - 50px);
+        }
+
+        /* LEFT SIDEBAR (SOL FRAME) */
+        .left-frame {
+            background-color: #f5f5f5;
+            overflow-y: auto;
+            border-right: 1px solid #e0e0e0;
+            padding: 10px 0;
+        }
+        .topic-list li {
+            padding: 4px 15px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            color: #000;
+            cursor: pointer;
+        }
+        .topic-list li:hover { background-color: #e6e6e6; }
+        .topic-list .count {
+            color: #a0a0a0;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+        .frame-header {
+            padding: 5px 15px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            background-color: #fff;
+            padding: 20px 40px;
+            overflow-y: auto;
+            max-width: 900px;
+        }
+        
+        /* ENTRY STYLES */
+        h1.topic-title {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #000;
+        }
+        .entry {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .entry-text {
+            font-size: 15px;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+        .entry-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+        .entry-author {
+            color: #5fba57;
+            font-weight: bold;
+        }
+        .entry-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* SPECIFIC EKSI ELEMENTS */
+        .bkz {
+            color: #5fba57; /* Green links for 'bkz' */
+            cursor: pointer;
+        }
+        .bkz:hover { text-decoration: underline; }
+        
+        .hidden-link {
+            border-bottom: 1px dotted #888;
+        }
+
+        /* ADVERTISEMENT BANNER PLACEHOLDER (Satire) */
+        .ad-banner {
+            width: 100%;
+            height: 90px;
+            background-color: #fafafa;
+            border: 1px dashed #ccc;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .left-frame { display: none; } /* Standard behavior for mobile view */
+            .main-content { padding: 15px; }
+            .search-container { display: none; }
+            header { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">ekşi sözlük</div>
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="başlık, #entry, @yazar">
+    </div>
+    <div class="user-menu">
+        <span>ben</span>
+        <span>mesaj</span>
+        <span>olay</span>
+        <span>...</span>
+    </div>
+</header>
+
+<div class="container">
+    <aside class="left-frame">
+        <div class="frame-header">gündem</div>
+        <ul class="topic-list">
+            <li>iphone 27 pro <span class="count">142</span></li>
+            <li>9 aralık 2035 istanbul su kesintisi <span class="count">893</span></li>
+            <li>yapay zeka vergisinin %60 olması <span class="count">45</span></li>
+            <li>neuralink taktıran dayılar <span class="count">12</span></li>
+            <li>doların 1500 lira barajını aşması <span class="count">3201</span></li>
+            <li>mars kolonisinde şırdan satmak <span class="count">5</span></li>
+            <li>chatgpt'nin cumhurbaşkanı adayı olması <span class="count">156</span></li>
+            <li>esenyurt nükleer atık tesisi <span class="count">78</span></li>
+            <li>kadıköy vapurunun uçan feribotla değişmesi <span class="count">210</span></li>
+            <li>2035 model togg <span class="count">67</span></li>
+            <li>türkiye'nin ab üyeliği süreci <span class="count">1</span></li>
+            <li>kira öder gibi oksijen tüpü almak <span class="count">33</span></li>
+            <li>suriyelilerin geri dönüş şakası <span class="count">88</span></li>
+            <li>eski internet <span class="count">412</span></li>
+            <li>metaverse tapu dairesi sırası <span class="count">23</span></li>
+            <li>fenerbahçe'nin 21 yıldır şampiyon olamaması <span class="count">1907</span></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        
+        <div class="ad-banner">
+            reklam: rüya lisansınızın süresi doldu mu? uykunuzda reklamsız gezinti için hemen tıklayın.
+        </div>
+
+        <h1 class="topic-title">eski internet</h1>
+
+        <div class="entry">
+            <div class="entry-text">
+                insanların bot değil de gerçekten insan olduğu, yorumların yapay zeka tarafından değil de klavye başında terleyen ergenler tarafından yazıldığı, her şeyin "metaverse" ya da "blockchain" tabanlı olmak zorunda olmadığı o güzel dönemler.<br><br>
+                
+                artık özlenendir. şimdiki gibi düşünceni yazmadan önce "algoritma puanım düşer mi?" diye korkmazdık. <span class="bkz">(bkz: sosyal kredi sistemi)</span> gelmeden önceki son kaleydi belki de.<br><br>
+                
+                hatırlıyorum, 2024 civarında "internet çok bozuldu" derdik. meğer o zamanlar altın çağımızı yaşıyormuşuz. şimdi girmek için retina taraması yaptığın, her like'ının devlete raporlandığı, video izlemek için beynine çip onayı verdiğin bu garabet sisteme internet demek bin şahit ister. <br><br>
+                
+                keşke o günlere dönsek de yine saçma sapan tiktok videolarına maruz kalsak. en azından onları çekenler, renderlanmış <span class="bkz">(bkz: deepfake)</span> karakterler değildi.
+            </div>
+            <div class="entry-footer">
+                <div class="entry-actions">
+                    <span>paylaş</span>
+                    <span>şikayet</span>
+                </div>
+                <div class="entry-meta">
+                    <a href="#" class="entry-author">analog adam</a> 
+                    <span>09.12.2035 14:42</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="entry">
+            <div class="entry-text">
+                o zamanlar <span class="bkz">(bkz: reddit)</span> vardı, <span class="bkz">(bkz: twitter)</span> vardı. şimdi hepsi "x-corp global veri bakanlığı"na bağlandı. <br><br>
+                
+                bir de modem diye bir kutu vardı evde, ışıkları yanıp sönerdi. şimdi direkt uydu üzerinden ense köküne basıyorlar sinyali. nostalji olsun diye geçen gün hurdacıdan bi tane iphone 15 buldum, şarja taktım çalışmadı tabi. hey gidi günler.
+            </div>
+            <div class="entry-footer">
+                <div class="entry-actions">
+                    <span>paylaş</span>
+                    <span>şikayet</span>
+                </div>
+                <div class="entry-meta">
+                    <a href="#" class="entry-author">cyber_kebab</a> 
+                    <span>09.12.2035 15:01</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="entry">
+            <div class="entry-text">
+                bugünlerde entry girmek için bile yapay zeka editöründen onay bekliyoruz. eskiden imla kurallarına uymayanlara "türkçe öğretmeni misin birader" denirdi, şimdi imla hatası yaparsan sistem "düşük iq tespiti" yapıp internet hızını düşürüyor. <br><br>
+                
+                nerde o eski kaos, nerde o eski kavgalar. şimdi herkesin profilinin yanında "vatandaşlık uyum puanı" yazıyor diye kimse kimseye sövemiyor. sözlük bile tataflı oldu, yeşil tema dışında her şey değişti.
+            </div>
+            <div class="entry-footer">
+                <div class="entry-actions">
+                    <span>paylaş</span>
+                    <span>şikayet</span>
+                </div>
+                <div class="entry-meta">
+                    <a href="#" class="entry-author">nostaljik_troll</a> 
+                    <span>09.12.2035 16:20</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>
