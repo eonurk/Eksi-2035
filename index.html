@@ -17,6 +17,7 @@
             --entry-bg: #fff;
             --meta-color: #999;
             --hover-bg: #e6e6e6;
+            --msg-unread-bg: #f0f7f0;
         }
 
         [data-theme="dark"] {
@@ -29,6 +30,7 @@
             --entry-bg: #2d2d2d;
             --meta-color: #777;
             --hover-bg: #333;
+            --msg-unread-bg: #263326;
         }
 
         /* RESET & BASE STYLES */
@@ -110,9 +112,21 @@
             color: var(--meta-color);
             align-items: center;
         }
-        .user-menu span { cursor: pointer; }
+        .user-menu span { cursor: pointer; position: relative; }
         .user-menu span:hover { color: var(--link-color); }
         
+        /* Badge for notifications */
+        .badge {
+            background-color: #5fba57;
+            color: white;
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 4px;
+            position: absolute;
+            top: -5px;
+            right: -8px;
+        }
+
         /* Theme Toggle Button */
         .theme-toggle {
             background: none;
@@ -223,6 +237,48 @@
         .entry-actions span { cursor: pointer; }
         .entry-actions span:hover { text-decoration: underline; }
         
+        /* SPECIAL PAGES STYLES */
+        .profile-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .stat-item strong { color: var(--link-color); }
+        
+        .message-list, .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message-item, .event-item {
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--bg-color);
+            cursor: pointer;
+        }
+        .message-item:hover, .event-item:hover {
+            border-color: var(--link-color);
+        }
+        .message-item.unread {
+            background-color: var(--msg-unread-bg);
+            font-weight: 600;
+        }
+        .msg-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--meta-color);
+            margin-bottom: 5px;
+        }
+        .msg-sender { font-weight: bold; color: var(--link-color); }
+
         /* SPECIFIC ELEMENTS */
         .bkz {
             color: var(--link-color);
@@ -264,12 +320,12 @@
             .header-left { gap: 10px; }
             .mobile-menu-btn { display: block; }
             
-            .search-container { 
-                display: none;
-            }
+            .search-container { display: none; }
             
-            .user-menu span:not(.theme-toggle-wrapper) { display: none; }
-            .theme-toggle-wrapper { display: block; }
+            /* Show icons on mobile for user menu instead of hiding */
+            .user-menu { gap: 10px; }
+            .user-menu span { display: block; }
+            .user-menu-text { display: none; } /* Hide text "mesaj", show icon if we had one, but keeping text small is ok for now or abbreviations */
 
             .left-frame { 
                 position: fixed;
@@ -306,10 +362,12 @@
         <span class="theme-toggle-wrapper">
             <button class="theme-toggle" id="themeBtn">🌙</button>
         </span>
-        <span>ben</span>
-        <span>mesaj</span>
-        <span>olay</span>
-        <span>...</span>
+        <span onclick="window.location.hash = 'special-profile'">ben</span>
+        <span onclick="window.location.hash = 'special-messages'">
+            mesaj <div class="badge">2</div>
+        </span>
+        <span onclick="window.location.hash = 'special-events'">olay</span>
+        <span onclick="window.location.hash = 'special-settings'">...</span>
     </div>
 </header>
 
@@ -331,7 +389,9 @@
     // DATA MOCK (DATABASE)
     // ----------------------
     const db = {
+        // --- TOPICS ---
         "eski-internet": {
+            type: 'topic',
             title: "eski internet",
             count: 412,
             entries: [
@@ -344,15 +404,11 @@
                     text: `o zamanlar <span class="bkz">(bkz: reddit)</span> vardı, <span class="bkz">(bkz: twitter)</span> vardı. şimdi hepsi "x-corp global veri bakanlığı"na bağlandı.<br><br>bir de modem diye bir kutu vardı evde, ışıkları yanıp sönerdi. şimdi direkt uydu üzerinden ense köküne basıyorlar sinyali. nostalji olsun diye geçen gün hurdacıdan bi tane iphone 15 buldum, şarja taktım çalışmadı tabi. hey gidi günler.`,
                     author: "cyber_kebab",
                     date: "09.12.2035 15:01"
-                },
-                {
-                    text: `bugünlerde entry girmek için bile yapay zeka editöründen onay bekliyoruz. eskiden imla kurallarına uymayanlara "türkçe öğretmeni misin birader" denirdi, şimdi imla hatası yaparsan sistem "düşük iq tespiti" yapıp internet hızını düşürüyor.`,
-                    author: "nostaljik_troll",
-                    date: "09.12.2035 16:20"
                 }
             ]
         },
         "iphone-27-pro": {
+            type: 'topic',
             title: "iphone 27 pro",
             count: 142,
             entries: [
@@ -369,6 +425,7 @@
             ]
         },
         "9-aralik-2035-istanbul-su-kesintisi": {
+            type: 'topic',
             title: "9 aralık 2035 istanbul su kesintisi",
             count: 893,
             entries: [
@@ -376,15 +433,11 @@
                     text: `iski'den yapılan açıklamaya göre "bulutlarda bakım çalışması" varmış. arkadaş bulutun bakımı mı olur? yağmur duasına yapay zeka entegrasyonu yapıyorlar kesin. 3 gündür susuzuz, damacana suyun litresi bitcoinle yarışıyor.`,
                     author: "susuz_yaz",
                     date: "15.12.2035 11:00"
-                },
-                {
-                    text: `su yerine "sivılaştırılmış oksijen kapsülü" dağıtıyorlar belediyeden. tadı metal gibi. eski klorlu şebeke suyunu özleyeceğim aklıma gelmezdi.`,
-                    author: "esenyurtlu",
-                    date: "15.12.2035 12:45"
                 }
             ]
         },
         "yapay-zeka-vergisi": {
+            type: 'topic',
             title: "yapay zeka vergisi",
             count: 3201,
             entries: [
@@ -392,15 +445,11 @@
                     text: `beynimizin %10'unu kullandığımız için geri kalan %90'lık boş alana devlet bulut depolama hizmeti kuracakmış. buna itiraz edince de "yapay zeka geliştirme fonu" adı altında maaşın yarısını kesiyorlar. <span class="bkz">(bkz: black mirror)</span> bölümü gibi ülke yemin ederim.`,
                     author: "vergi_mukellefi_bot",
                     date: "14.12.2035 23:50"
-                },
-                {
-                    text: `evdeki robot süpürge bile "ben de vergi mükellefiyim artık" diye grev yapıyor, salonu süpürmüyor. fişini çekicem ama sendikalı olmuş şerefsiz.`,
-                    author: "temizlik_imandandir",
-                    date: "15.12.2035 08:20"
                 }
             ]
         },
         "neuralink-taktiran-dayilar": {
+            type: 'topic',
             title: "neuralink taktıran dayılar",
             count: 45,
             entries: [
@@ -408,15 +457,11 @@
                     text: `kahvede okey oynarken bluetooth üzerinden taş çalan dayılardır. geçen biri "beynim dondu reset atın" diye bağırıyordu, meğer güncelleme gelmiş.`,
                     author: "genc_beyin",
                     date: "13.12.2035 14:00"
-                },
-                {
-                    text: `bunların bir de virüs yiyen modelleri var. amcam geçen gün durup dururken rusça marş söylemeye başladı. heçkırlamışlar adamı.`,
-                    author: "siber_yegen",
-                    date: "13.12.2035 15:45"
                 }
             ]
         },
         "dolarin-1500-lira-barajini-asmasi": {
+            type: 'topic',
             title: "doların 1500 lira barajını aşması",
             count: 5500,
             entries: [
@@ -424,15 +469,11 @@
                     text: `psikolojik sınırdı, aştık rahatladık. artık 1 dolar verip simit bile alamıyoruz ama olsun.`,
                     author: "ekonomist_degilim_ama",
                     date: "15.12.2035 01:00"
-                },
-                {
-                    text: `ekonomi bakanı "dolarla mı maaş alıyorsunuz?" diye sordu yine. hayır bakanım, biz maaş almıyoruz artık, direkt "yaşam kredisi" yükleniyor karta, o da ayın 3'ünde bitiyor.`,
-                    author: "maasli_kole",
-                    date: "15.12.2035 09:00"
                 }
             ]
         },
         "mars-kolonisinde-sirdan-satmak": {
+            type: 'topic',
             title: "mars kolonisinde şırdan satmak",
             count: 5,
             entries: [
@@ -444,6 +485,7 @@
             ]
         },
         "chatgpt-nin-cumhurbaskani-adayi-olmasi": {
+            type: 'topic',
             title: "chatgpt'nin cumhurbaşkanı adayı olması",
             count: 156,
             entries: [
@@ -451,15 +493,11 @@
                     text: `vaatleri çok mantıklı. "herkese bedava gpu", "sınırsız internet" ve "daha az bug'lı bir hayat". mevcut siyasetçilerden daha samimi geldi bana. en azından "bilmiyorum" diyebiliyor.`,
                     author: "kararsiz_secmen",
                     date: "11.12.2035 13:00"
-                },
-                {
-                    text: `miting yapmasına gerek yok, direkt herkesin rüyasına girip propaganda yapıyor. teknoloji çok gelişti azizim.`,
-                    author: "eski_kafali",
-                    date: "11.12.2035 14:20"
                 }
             ]
         },
         "esenyurt-nukleer-atik-tesisi": {
+            type: 'topic',
             title: "esenyurt nükleer atık tesisi",
             count: 78,
             entries: [
@@ -467,15 +505,11 @@
                     text: `zaten normalde de radyasyon yayiyordu ilce, resmiyete dökülmesi iyi olmuş.`,
                     author: "sehir_plancisi",
                     date: "12.12.2035 09:00"
-                },
-                {
-                    text: `kiralar düşer diye sevindik ama mutant emlakçılar "manzaralı" diye daha çok istiyor.`,
-                    author: "kiraci_teroru",
-                    date: "12.12.2035 10:15"
                 }
             ]
         },
         "kadikoy-vapurunun-ucan-feribotla-degismesi": {
+            type: 'topic',
             title: "kadıköy vapurunun uçan feribotla değişmesi",
             count: 210,
             entries: [
@@ -487,6 +521,7 @@
             ]
         },
         "2035-model-togg": {
+            type: 'topic',
             title: "2035 model togg",
             count: 67,
             entries: [
@@ -498,6 +533,7 @@
             ]
         },
         "turkiyenin-ab-uyeligi-sureci": {
+            type: 'topic',
             title: "türkiye'nin ab üyeliği süreci",
             count: 1,
             entries: [
@@ -509,6 +545,7 @@
             ]
         },
         "kira-oder-gibi-oksijen-tupu-almak": {
+            type: 'topic',
             title: "kira öder gibi oksijen tüpü almak",
             count: 33,
             entries: [
@@ -520,6 +557,7 @@
             ]
         },
         "suriyelilerin-geri-donus-sakasi": {
+            type: 'topic',
             title: "suriyelilerin geri dönüş şakası",
             count: 88,
             entries: [
@@ -531,6 +569,7 @@
             ]
         },
         "metaverse-tapu-dairesi-sirasi": {
+            type: 'topic',
             title: "metaverse tapu dairesi sırası",
             count: 23,
             entries: [
@@ -542,6 +581,7 @@
             ]
         },
         "fenerbahcenin-21-yildir-sampiyon-olamamasi": {
+            type: 'topic',
             title: "fenerbahçe'nin 21 yıldır şampiyon olamaması",
             count: 1907,
             entries: [
@@ -549,12 +589,49 @@
                     text: `ali koç'un torunu başkan oldu hala "seneye kesin bizde" diyorlar. bu sene ligi robot hakemler yönetti, yine olmadı. sorun bizde galiba.`,
                     author: "hasta_fenerli",
                     date: "15.12.2035 21:00"
-                },
-                {
-                    text: `artık şampiyonluk kupasını müzede hologram olarak gösteriyorlar. "olsaydı böyle dururdu" diye. vizyon desen var.`,
-                    author: "gsl_aslan",
-                    date: "15.12.2035 21:45"
                 }
+            ]
+        },
+        
+        // --- SPECIAL PAGES ---
+        "special-profile": {
+            type: 'profile',
+            title: 'ben',
+            stats: {
+                username: 'cyber_yazar_2035',
+                entries: 1542,
+                followers: 450,
+                karma: 89000,
+                badges: ['10. yıl', 'cyborg onaylı', 'troll savar']
+            }
+        },
+        "special-messages": {
+            type: 'messages',
+            title: 'mesajlar',
+            items: [
+                { sender: 'moderasyon', subject: 'entry silinmesi hakkında', date: '15.12.2035 12:00', unread: true, preview: 'sayın yazar, "yapay zeka vergi dairesi" başlığındaki...' },
+                { sender: 'troll_007', subject: 'naber lan', date: '14.12.2035 23:45', unread: true, preview: 'seni şikayet ettim olm bittin sen...' },
+                { sender: 'reklam_botu_v4', subject: 'indirimli protez kol', date: '12.12.2035 09:00', unread: false, preview: 'ikinci el biyonik uzuvlarda %40 indirim...' }
+            ]
+        },
+        "special-events": {
+            type: 'events',
+            title: 'olaylar',
+            items: [
+                { title: 'çaylak onay listesi açıklandı', date: '15.12.2035', desc: 'yapay zeka tarafından incelenen 500 bin çaylak yazar oldu.' },
+                { title: 'sözlük tema güncellemesi', date: '10.12.2035', desc: 'karanlık mod artık beyninize direkt sinyal göndererek çalışacak.' },
+                { title: 'moderator alımı', date: '01.12.2035', desc: 'en az 3. seviye implant sahibi moderatorler aranıyor.' }
+            ]
+        },
+        "special-settings": {
+            type: 'settings',
+            title: 'ayarlar',
+            items: [
+                'kişisel bilgiler',
+                'şifre değiştir',
+                'hesabı dondur',
+                'beyin çipi entegrasyonu',
+                'yapay zeka filtresi'
             ]
         }
     };
@@ -571,10 +648,11 @@
     const body = document.body;
     const searchInput = document.getElementById('searchInput');
 
-    // 1. Render Sidebar
+    // 1. Render Sidebar (Topics only)
     function renderSidebar() {
         let html = '';
         for (const [key, val] of Object.entries(db)) {
+            if(val.type !== 'topic') continue; // Skip special pages
             html += `<li onclick="goToTopic('${key}')" id="nav-${key}">
                 ${val.title} <span class="count">${val.count}</span>
             </li>`;
@@ -582,68 +660,146 @@
         topicListEl.innerHTML = html;
     }
 
-    // 2. Render Main Content (Topic Entries)
+    // 2. Render Page Logic
     function renderTopic(key) {
-        const topic = db[key];
-        
-        // Update Active State in Sidebar
+        // Handle Sidebar Active State
         document.querySelectorAll('.topic-list li').forEach(li => li.classList.remove('active'));
         const activeItem = document.getElementById(`nav-${key}`);
         if(activeItem) activeItem.classList.add('active');
 
-        if (!topic) {
-            // 404 Case or Homepage
-            renderHome();
-            return;
-        }
-
-        // Scroll top
+        // Scroll top & Mobile menu
         mainContentEl.scrollTop = 0;
         if(window.innerWidth <= 768) {
-            // Close mobile menu if open
             leftFrame.classList.remove('active');
             overlay.classList.remove('active');
         }
 
-        // Generate Entries HTML
-        let entriesHtml = '';
-        topic.entries.forEach(entry => {
-            entriesHtml += `
-            <div class="entry">
-                <div class="entry-text">
-                    ${entry.text}
-                </div>
-                <div class="entry-footer">
-                    <div class="entry-actions">
-                        <span>paylaş</span>
-                        <span>şikayet</span>
-                    </div>
-                    <div class="entry-meta">
-                        <a class="entry-author">${entry.author}</a> 
-                        <span>${entry.date}</span>
-                    </div>
-                </div>
-            </div>`;
-        });
-
-        const html = `
-            <div class="ad-banner">
-                 <strong>reklam</strong><br>
-                 rüya lisansınızın süresi doldu mu? uykunuzda reklamsız gezinti için hemen tıklayın.
-            </div>
-            <h1 class="topic-title">${topic.title}</h1>
-            ${entriesHtml}
-        `;
+        const data = db[key];
         
-        mainContentEl.innerHTML = html;
-        document.title = `${topic.title} - ekşi sözlük`;
+        if (!data) {
+            renderHome();
+            return;
+        }
+
+        // --- RENDER BASED ON TYPE ---
+        
+        // A. TOPIC (Standard Dictionary Entry)
+        if (data.type === 'topic') {
+            let entriesHtml = '';
+            data.entries.forEach(entry => {
+                entriesHtml += `
+                <div class="entry">
+                    <div class="entry-text">${entry.text}</div>
+                    <div class="entry-footer">
+                        <div class="entry-actions">
+                            <span>paylaş</span>
+                            <span>şikayet</span>
+                        </div>
+                        <div class="entry-meta">
+                            <a class="entry-author">${entry.author}</a> 
+                            <span>${entry.date}</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            mainContentEl.innerHTML = `
+                <div class="ad-banner">
+                     <strong>reklam</strong><br>
+                     rüya lisansınızın süresi doldu mu? uykunuzda reklamsız gezinti için hemen tıklayın.
+                </div>
+                <h1 class="topic-title">${data.title}</h1>
+                ${entriesHtml}
+            `;
+            document.title = `${data.title} - ekşi sözlük`;
+        }
+        
+        // B. PROFILE (Ben)
+        else if (data.type === 'profile') {
+            mainContentEl.innerHTML = `
+                <h1 class="topic-title">${data.title}</h1>
+                <div class="profile-header">
+                    <h2>@${data.stats.username}</h2>
+                    <div class="profile-stats">
+                        <span class="stat-item"><strong>${data.stats.entries}</strong> entry</span>
+                        <span class="stat-item"><strong>${data.stats.followers}</strong> takipçi</span>
+                        <span class="stat-item"><strong>${data.stats.karma}</strong> karma</span>
+                    </div>
+                    <div style="margin-top:10px; font-size:12px; color:var(--meta-color);">
+                        rozetler: ${data.stats.badges.join(', ')}
+                    </div>
+                </div>
+                <div class="entry">
+                    <div class="entry-text">henüz kendinizi tanımadınız. belki bir gün...</div>
+                </div>
+            `;
+        }
+
+        // C. MESSAGES (Mesaj)
+        else if (data.type === 'messages') {
+            let listHtml = '<div class="message-list">';
+            data.items.forEach(msg => {
+                listHtml += `
+                    <div class="message-item ${msg.unread ? 'unread' : ''}">
+                        <div class="msg-header">
+                            <span class="msg-sender">${msg.sender}</span>
+                            <span>${msg.date}</span>
+                        </div>
+                        <div style="font-weight:bold; margin-bottom:5px;">${msg.subject}</div>
+                        <div style="color:var(--text-color); font-size:13px;">${msg.preview}</div>
+                    </div>
+                `;
+            });
+            listHtml += '</div>';
+            
+            mainContentEl.innerHTML = `
+                <h1 class="topic-title">${data.title}</h1>
+                ${listHtml}
+            `;
+        }
+
+        // D. EVENTS (Olay)
+        else if (data.type === 'events') {
+             let listHtml = '<div class="event-list">';
+            data.items.forEach(evt => {
+                listHtml += `
+                    <div class="event-item">
+                        <div class="msg-header">
+                            <span class="msg-sender">${evt.title}</span>
+                            <span>${evt.date}</span>
+                        </div>
+                        <div style="margin-top:5px;">${evt.desc}</div>
+                    </div>
+                `;
+            });
+            listHtml += '</div>';
+            
+            mainContentEl.innerHTML = `
+                <h1 class="topic-title">${data.title}</h1>
+                ${listHtml}
+            `;
+        }
+        
+        // E. SETTINGS (...)
+        else if (data.type === 'settings') {
+             let listHtml = '<ul class="topic-list">';
+            data.items.forEach(item => {
+                listHtml += `
+                    <li style="padding:10px 0; border-bottom:1px solid var(--border-color);">
+                        ${item}
+                    </li>
+                `;
+            });
+            listHtml += '</ul>';
+            
+            mainContentEl.innerHTML = `
+                <h1 class="topic-title">${data.title}</h1>
+                ${listHtml}
+            `;
+        }
     }
 
     // 3. Render Homepage (Default)
     function renderHome() {
-        // Just show the first topic or a welcome message
-        // For 'eksi' vibe, usually it opens a popular topic or "günün olayı"
-        // Let's open "eski internet" as default
         renderTopic('eski-internet');
     }
 
