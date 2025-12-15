@@ -328,9 +328,168 @@
         }
         .overlay.active { display: block; }
 
+        /* MODAL STYLES (NEW) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            backdrop-filter: blur(5px); /* Blurred background */
+        }
+
+        .modal-content {
+            background-color: var(--frame-bg);
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .modal-content h2 {
+            color: var(--link-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .modal-content p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .close-button {
+            color: var(--meta-color);
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--text-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* INVASIVE AD SPECIFIC STYLES (NEW) */
+        .invasive-ad .modal-content {
+            background-color: var(--header-bg);
+            border-color: var(--link-color);
+            padding-bottom: 20px;
+        }
+
+        .invasive-ad .modal-content h2 {
+            color: var(--link-color);
+        }
+
+        .invasive-ad .ad-action-btn {
+            background-color: var(--link-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .invasive-ad .ad-action-btn:hover {
+            background-color: #4CAF50; /* A slightly darker green */
+        }
+
+        /* Make the close button "run away" on hover */
+        .invasive-ad .close-button {
+            transition: transform 0.2s ease-out;
+        }
+        .invasive-ad .close-button:hover {
+            cursor: pointer; /* Change to pointer to indicate it's clickable */
+        }
+
+        /* STATE WATCHER BOT STYLES (NEW) */
+        .state-watcher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--header-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 999; /* Below modals, but above general content */
+            font-size: 13px;
+            color: var(--meta-color);
+            max-width: 250px;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            display: none; /* Hidden by default, JS will show/hide */
+        }
+
+        .state-watcher img {
+            filter: var(--text-color-filter, invert(0)); /* Adjust icon color for dark mode */
+        }
+
+        
+
+        [data-theme="dark"] .state-watcher img {
+
+            filter: invert(1); /* Invert for dark mode if icon is dark by default */
+
+        }
+
+
+
+
+
+        /* NEURAL LINK ERROR MODAL STYLES (NEW) */
+        .neural-link-error-modal .modal-content {
+            background-color: #3d1c1c; /* Dark red/brown for error */
+            border-color: #ff0000; /* Red border */
+            color: #fff;
+            padding: 40px;
+        }
+
+        .neural-link-error-modal h2 {
+            color: #ffdd00; /* Yellow for warning */
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .neural-link-error-modal p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .neural-link-error-modal .ad-action-btn {
+            background-color: #ff0000;
+            color: white;
+            font-size: 18px;
+            padding: 15px 30px;
+            border-radius: 8px;
+        }
+
+        .neural-link-error-modal .ad-action-btn:hover {
+            background-color: #cc0000;
+        }
+        
         /* MOBILE RESPONSIVE */
-        @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; }
+        @media (max-width: 768px) {            .container { grid-template-columns: 1fr; }
             
             .header-left { gap: 10px; }
             .mobile-menu-btn { display: block; }
@@ -376,6 +535,7 @@
         <span class="theme-toggle-wrapper">
             <button class="theme-toggle" id="themeBtn">🌙</button>
         </span>
+        <span id="citizenshipScore">puan: 100</span>
         <span onclick="window.location.hash = 'special-profile'">ben</span>
         <span onclick="window.location.hash = 'special-messages'">
             mesaj <div class="badge">2</div>
@@ -403,7 +563,40 @@
 
     <main class="main-content" id="mainContent">
         <!-- Content will be injected here via JS -->
-    </main>
+        </main>
+    </div>
+    
+    <div id="stateWatcher" class="state-watcher">
+        <img src="https://img.icons8.com/ios-filled/50/000000/drone--v1.png" alt="watcher drone" width="24" height="24">
+        <span id="watcherMessage"></span>
+    </div>
+    
+    <div id="lowScoreWarning" class="modal">
+    <div class="modal-content">
+        <span class="close-button" id="closeWarningBtn">&times;</span>
+        <h2>UYARI: Düşük Vatandaşlık Puanı!</h2>
+        <p>Vatandaşlık puanınız düşüşte. Toplum normlarına uygun davranışlar sergilemeye özen gösteriniz. Aksi takdirde, dijital erişim kısıtlamaları ve diğer yaptırımlar uygulanabilir.</p>
+        <p>Lütfen daha fazla devlet onaylı içerik tüketin ve şüpheli başlıklardan uzak durun.</p>
+    </div>
+</div>
+
+<div id="invasiveAd" class="modal invasive-ad">
+    <div class="modal-content">
+        <span class="close-button" id="closeAdBtn">&times;</span>
+        <h2>Rüya Lisansınızın Süresi Doldu!</h2>
+        <p>Uyurken gördüğünüz rüyalar artık devlet gözetiminde değildir. Reklamsız ve denetimli rüyalar için hemen "Premium Rüya Lisansı" satın alın!</p>
+        <p>Şimdi alana "Telepatik Reklam Engelleme Çipi" hediye!</p>
+        <button class="ad-action-btn">Hemen Yükselt!</button>
+    </div>
+</div>
+
+<div id="neuralLinkError" class="modal neural-link-error-modal">
+    <div class="modal-content">
+        <h2>Neural Link Bağlantısı Kesildi!</h2>
+        <p>Beyin arayüzünüz ile sunucu bağlantısı aniden koptu. Sistem kararlılığı tehlikede!</p>
+        <p>Lütfen yeniden bağlantı kurmak için beyninizin "yenile" düğmesine basınız.</p>
+        <button id="reconnectNeuralLinkBtn" class="ad-action-btn">Bağlantıyı Yenile</button>
+    </div>
 </div>
 
 <script>
@@ -1048,6 +1241,93 @@
     const themeBtn = document.getElementById('themeBtn');
     const body = document.body;
     const searchInput = document.getElementById('searchInput');
+    const citizenshipScoreEl = document.getElementById('citizenshipScore');
+    const lowScoreWarningEl = document.getElementById('lowScoreWarning'); // New
+    const closeWarningBtn = document.getElementById('closeWarningBtn'); // New
+    const invasiveAdEl = document.getElementById('invasiveAd'); // NEW
+    const closeAdBtn = document.getElementById('closeAdBtn'); // NEW
+    const stateWatcherEl = document.getElementById('stateWatcher'); // NEW
+    const watcherMessageEl = document.getElementById('watcherMessage'); // NEW
+    const neuralLinkErrorEl = document.getElementById('neuralLinkError'); // NEW
+    const reconnectNeuralLinkBtn = document.getElementById('reconnectNeuralLinkBtn'); // NEW
+    let citizenshipScore = 100;
+    let topicViewCount = 0; // NEW for random ad display
+
+    function updateCitizenshipScore(change) {
+        citizenshipScore += change;
+        // Ensure score doesn't go below 0 (optional, but good for UI)
+        if (citizenshipScore < 0) citizenshipScore = 0;
+        
+        citizenshipScoreEl.textContent = `puan: ${citizenshipScore}`;
+        
+        if (citizenshipScore < 80) {
+            lowScoreWarningEl.style.display = 'block'; // Show modal
+        } else {
+            lowScoreWarningEl.style.display = 'none'; // Hide modal
+        }
+    }
+
+    // New: Functions to control invasive ad
+    function showInvasiveAd() {
+        invasiveAdEl.style.display = 'block';
+        updateCitizenshipScore(-3); // Lose points for seeing an ad (annoyance tax)
+    }
+
+    function hideInvasiveAd() {
+        invasiveAdEl.style.display = 'none';
+        // You could add score changes here for successfully closing, or for clicking the "upgrade" button
+    }
+
+    // New: Function to display state watcher messages
+    function displayWatcherMessage(message) {
+        watcherMessageEl.textContent = message;
+        stateWatcherEl.style.display = 'flex'; // Show bot
+        setTimeout(() => {
+            stateWatcherEl.style.display = 'none'; // Hide after 5 seconds
+        }, 5000);
+    }
+
+    // New: Function to show Neural Link Error
+    function showNeuralLinkError() {
+        neuralLinkErrorEl.style.display = 'block';
+        updateCitizenshipScore(-10); // Significant penalty for connection loss
+    }
+
+    // New: Function to hide Neural Link Error
+    function hideNeuralLinkError() {
+        neuralLinkErrorEl.style.display = 'none';
+        updateCitizenshipScore(5); // Small gain for successfully reconnecting
+    }
+
+    // Event listeners for the warning modal (New)
+    closeWarningBtn.addEventListener('click', () => {
+        lowScoreWarningEl.style.display = 'none';
+    });
+    // Optional: Close if clicking outside the modal content, on the modal background
+    lowScoreWarningEl.addEventListener('click', (e) => {
+        if (e.target === lowScoreWarningEl) {
+            lowScoreWarningEl.style.display = 'none';
+        }
+    });
+
+    // Event listener for the invasive ad close button
+    // The "run away" CSS effect makes it hard to click.
+    closeAdBtn.addEventListener('click', () => {
+        hideInvasiveAd();
+        updateCitizenshipScore(1); // Small gain for successfully closing the annoying ad
+    });
+
+    // New: Event listener for the "Hemen Yükselt!" button in the ad
+    document.querySelector('#invasiveAd .ad-action-btn').addEventListener('click', () => {
+        alert('Premium Rüya Lisansı satın alındı! (Simülasyon)');
+        hideInvasiveAd();
+        updateCitizenshipScore(10); // Big gain for complying with state messaging
+    });
+
+    // Event listener for Neural Link Reconnect button
+    reconnectNeuralLinkBtn.addEventListener('click', () => {
+        hideNeuralLinkError();
+    });
 
     // 1. Render Sidebar (Topics only)
     function renderSidebar() {
@@ -1063,6 +1343,18 @@
 
     // 2. Render Page Logic
     function renderTopic(key) {
+        updateCitizenshipScore(-1); // Lose 1 point for viewing a topic
+
+        topicViewCount++; // Increment view count
+        if (topicViewCount % 3 === 0 && Math.random() < 0.7) { // 70% chance every 3 topics
+            showInvasiveAd();
+        }
+
+        // Random chance for Neural Link Error
+        if (Math.random() < 0.02 && invasiveAdEl.style.display !== 'block') { // 2% chance, and not if ad is showing
+            showNeuralLinkError();
+        }
+
         // Handle Sidebar Active State
         document.querySelectorAll('.topic-list li').forEach(li => li.classList.remove('active'));
         const activeItem = document.getElementById(`nav-${key}`);
@@ -1081,6 +1373,34 @@
             renderHome();
             return;
         }
+
+        // State Watcher Bot commentary (NEW)
+        let watcherComment = "Devletimiz her zaman yanınızda.";
+        if (data.title.includes("yapay zeka vergisi")) {
+            watcherComment = "Yapay zeka faaliyetleriniz gözlem altında. Vergi kaçırma teşebbüsü algılandı!";
+            updateCitizenshipScore(-2); // Lose points for reading about tax evasion
+        } else if (data.title.includes("neuralink taktıran dayılar")) {
+            watcherComment = "Beyin çipi entegrasyonu vatandaşlık görevidir. Verileriniz işleniyor.";
+            updateCitizenshipScore(1); // Gain points for reading about state-approved tech
+        } else if (data.title.includes("su kesintisi")) {
+            watcherComment = "Su kaynaklarının verimli kullanımı esastır. İsraf tespiti durumunda yaptırım uygulanacaktır.";
+        } else if (data.title.includes("doların")) {
+            watcherComment = "Ulusal ekonomimize güveniyoruz. Finansal istikrarsızlık propagandası yaymayın.";
+            updateCitizenshipScore(-2); // Lose points for reading about currency issues
+        } else if (data.title.includes("fenerbahçe")) {
+            watcherComment = "Spor, ulusal birlik ve beraberliğimizin çimentosudur. Taraftarlık bilinci takdir edildi.";
+            updateCitizenshipScore(1); // Gain points for reading about national sports
+        } else if (data.title.includes("deprem")) {
+            watcherComment = "Afet bilinci yüksek vatandaşlar arıyoruz. Toplanma alanları kontrol ediliyor.";
+            updateCitizenshipScore(-1); // Lose points for reading about potential disaster (implies instability)
+        } else if (data.title.includes("uzay")) {
+            watcherComment = "Milli uzay programımız gurur kaynağımızdır. Destekleyin!";
+            updateCitizenshipScore(1); // Gain points for reading about national space program
+        } else if (data.title.includes("sevgililer")) {
+             watcherComment = "Sosyal ilişkileriniz devletin denetimindedir. Yapay zeka eşleşme oranları inceleniyor.";
+             updateCitizenshipScore(-1); // Lose points for private matters
+        }
+        displayWatcherMessage(watcherComment);
 
         // --- RENDER BASED ON TYPE ---
         
@@ -1244,9 +1564,11 @@
         if (isDark) {
             body.setAttribute('data-theme', 'light');
             themeBtn.innerText = '🌙';
+            updateCitizenshipScore(2); // Gain 2 points for switching to light mode
         } else {
             body.setAttribute('data-theme', 'dark');
             themeBtn.innerText = '☀️';
+            updateCitizenshipScore(-5); // Lose 5 points for switching to dark mode
         }
     });
 
@@ -1254,6 +1576,7 @@
     window.addEventListener('hashchange', handleHashChange);
     renderSidebar();
     handleHashChange(); // Handle initial load
+    updateCitizenshipScore(0); // Initialize score display
 
 </script>
 
