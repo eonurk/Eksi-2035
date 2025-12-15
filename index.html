@@ -4,25 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ekşi sözlük - kutsal bilgi kaynağı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* VARIABLES */
+        :root {
+            --bg-color: #e5e5e5;
+            --header-bg: #fff;
+            --text-color: #333;
+            --link-color: #5fba57;
+            --border-color: #ccc;
+            --frame-bg: #f5f5f5;
+            --entry-bg: #fff;
+            --meta-color: #999;
+            --hover-bg: #e6e6e6;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1b1b1b;
+            --header-bg: #2d2d2d;
+            --text-color: #e0e0e0;
+            --link-color: #73c96b;
+            --border-color: #444;
+            --frame-bg: #252525;
+            --entry-bg: #2d2d2d;
+            --meta-color: #777;
+            --hover-bg: #333;
+        }
+
         /* RESET & BASE STYLES */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Source Sans Pro', Arial, sans-serif;
-            background-color: #e5e5e5; /* Standard light mode background */
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-size: 14px;
             line-height: 1.5;
             overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
         }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
+        input, button { font-family: inherit; }
 
         /* HEADER */
         header {
-            background-color: #fff;
+            background-color: var(--header-bg);
             height: 50px;
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -31,13 +59,33 @@
             top: 0;
             width: 100%;
             z-index: 1000;
+            transition: background-color 0.3s;
         }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+            padding: 0 5px;
+        }
+
         .logo {
             font-weight: bold;
             font-size: 22px;
-            color: #5fba57; /* The iconic green */
+            color: var(--link-color);
             letter-spacing: -0.5px;
+            white-space: nowrap;
         }
+        
         .search-container {
             flex-grow: 1;
             margin: 0 20px;
@@ -46,138 +94,216 @@
         .search-input {
             width: 100%;
             padding: 8px 10px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 14px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
+        .search-input:focus { outline: none; border-color: var(--link-color); }
+
         .user-menu {
             display: flex;
             gap: 15px;
             font-size: 13px;
-            color: #888;
+            color: var(--meta-color);
+            align-items: center;
         }
-        .user-menu span:hover { color: #5fba57; cursor: pointer; }
+        .user-menu span { cursor: pointer; }
+        .user-menu span:hover { color: var(--link-color); }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
         /* LAYOUT GRID */
         .container {
             display: grid;
             grid-template-columns: 240px 1fr;
             margin-top: 50px;
-            height: calc(100vh - 50px);
+            min-height: calc(100vh - 50px);
         }
 
         /* LEFT SIDEBAR (SOL FRAME) */
         .left-frame {
-            background-color: #f5f5f5;
-            overflow-y: auto;
-            border-right: 1px solid #e0e0e0;
+            background-color: var(--frame-bg);
+            border-right: 1px solid var(--border-color);
             padding: 10px 0;
+            height: calc(100vh - 50px);
+            position: sticky;
+            top: 50px;
+            overflow-y: auto;
+            transition: background-color 0.3s;
         }
+        
+        .frame-header {
+            padding: 5px 15px;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
         .topic-list li {
             padding: 4px 15px;
             font-size: 13px;
             display: flex;
             justify-content: space-between;
-            color: #000;
+            color: var(--text-color);
             cursor: pointer;
+            border-left: 3px solid transparent;
         }
-        .topic-list li:hover { background-color: #e6e6e6; }
+        .topic-list li:hover { 
+            background-color: var(--hover-bg); 
+            border-left-color: var(--link-color);
+        }
         .topic-list .count {
-            color: #a0a0a0;
+            color: var(--meta-color);
             font-size: 11px;
             margin-left: 5px;
-        }
-        .frame-header {
-            padding: 5px 15px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
         }
 
         /* MAIN CONTENT */
         .main-content {
-            background-color: #fff;
+            background-color: var(--entry-bg);
             padding: 20px 40px;
-            overflow-y: auto;
-            max-width: 900px;
+            min-height: 100%;
+            transition: background-color 0.3s;
         }
-        
         
         /* ENTRY STYLES */
         h1.topic-title {
             font-size: 26px;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #000;
+            color: var(--text-color);
         }
         .entry {
             margin-bottom: 30px;
             position: relative;
+            padding-bottom: 15px;
+            border-bottom: 1px solid transparent; 
         }
+        .entry:not(:last-child) {
+            border-bottom-color: var(--hover-bg);
+        }
+
         .entry-text {
             font-size: 15px;
             margin-bottom: 10px;
             word-wrap: break-word;
+            line-height: 1.6;
         }
         .entry-footer {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            color: #999;
+            color: var(--meta-color);
             margin-top: 10px;
         }
         .entry-author {
-            color: #5fba57;
+            color: var(--link-color);
             font-weight: bold;
         }
         .entry-actions {
             display: flex;
             gap: 10px;
         }
+        .entry-actions span { cursor: pointer; }
+        .entry-actions span:hover { text-decoration: underline; }
         
-        /* SPECIFIC EKSI ELEMENTS */
+        /* SPECIFIC ELEMENTS */
         .bkz {
-            color: #5fba57; /* Green links for 'bkz' */
+            color: var(--link-color);
             cursor: pointer;
         }
         .bkz:hover { text-decoration: underline; }
         
-        .hidden-link {
-            border-bottom: 1px dotted #888;
-        }
-
-        /* ADVERTISEMENT BANNER PLACEHOLDER (Satire) */
         .ad-banner {
             width: 100%;
-            height: 90px;
-            background-color: #fafafa;
-            border: 1px dashed #ccc;
+            padding: 15px;
+            background-color: var(--frame-bg);
+            border: 1px dashed var(--border-color);
             margin-bottom: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #aaa;
+            color: var(--meta-color);
             font-size: 12px;
+            text-align: center;
+            border-radius: 4px;
         }
+        
+        /* Overlay for mobile menu */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        .overlay.active { display: block; }
 
         /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
             .container { grid-template-columns: 1fr; }
-            .left-frame { display: none; } /* Standard behavior for mobile view */
+            
+            .header-left { gap: 10px; }
+            .mobile-menu-btn { display: block; }
+            
+            .search-container { 
+                display: none; /* Can be toggled in a fuller version, usually hidden or icon-only on mobile headers */
+            }
+            
+            .user-menu span:not(.theme-toggle-wrapper) { display: none; } /* Hide extra menu items on mobile */
+            .theme-toggle-wrapper { display: block; }
+
+            .left-frame { 
+                position: fixed;
+                top: 50px;
+                left: -280px;
+                width: 280px;
+                height: calc(100vh - 50px);
+                z-index: 1001;
+                transition: left 0.3s ease-in-out;
+                box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            }
+            .left-frame.active { left: 0; }
+            
             .main-content { padding: 15px; }
-            .search-container { display: none; }
-            header { justify-content: center; }
+            h1.topic-title { font-size: 22px; }
         }
     </style>
 </head>
 <body>
 
+<div class="overlay" id="overlay"></div>
+
 <header>
-    <div class="logo">ekşi sözlük</div>
+    <div class="header-left">
+        <button class="mobile-menu-btn" id="menuBtn">☰</button>
+        <div class="logo">ekşi sözlük</div>
+    </div>
+    
     <div class="search-container">
         <input type="text" class="search-input" placeholder="başlık, #entry, @yazar">
     </div>
+    
     <div class="user-menu">
+        <span class="theme-toggle-wrapper">
+            <button class="theme-toggle" id="themeBtn">🌙</button>
+        </span>
         <span>ben</span>
         <span>mesaj</span>
         <span>olay</span>
@@ -186,8 +312,8 @@
 </header>
 
 <div class="container">
-    <aside class="left-frame">
-        <div class="frame-header">gündem</div>
+    <aside class="left-frame" id="leftFrame">
+        <div class="frame-header">bugün</div>
         <ul class="topic-list">
             <li>iphone 27 pro <span class="count">142</span></li>
             <li>9 aralık 2035 istanbul su kesintisi <span class="count">893</span></li>
@@ -211,7 +337,8 @@
     <main class="main-content">
         
         <div class="ad-banner">
-            reklam: rüya lisansınızın süresi doldu mu? uykunuzda reklamsız gezinti için hemen tıklayın.
+            <strong>reklam</strong><br>
+            rüya lisansınızın süresi doldu mu? uykunuzda reklamsız gezinti için hemen tıklayın.
         </div>
 
         <h1 class="topic-title">eski internet</h1>
@@ -276,6 +403,45 @@
 
     </main>
 </div>
+
+<script>
+    // Elements
+    const menuBtn = document.getElementById('menuBtn');
+    const leftFrame = document.getElementById('leftFrame');
+    const overlay = document.getElementById('overlay');
+    const themeBtn = document.getElementById('themeBtn');
+    const body = document.body;
+
+    // Mobile Menu Logic
+    function toggleMenu() {
+        leftFrame.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+
+    // Close menu when clicking a link in sidebar (mobile UX)
+    document.querySelectorAll('.topic-list li').forEach(item => {
+        item.addEventListener('click', () => {
+            if(window.innerWidth <= 768) {
+                toggleMenu();
+            }
+        });
+    });
+
+    // Dark Mode Logic
+    themeBtn.addEventListener('click', () => {
+        const isDark = body.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+            body.setAttribute('data-theme', 'light');
+            themeBtn.innerText = '🌙';
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            themeBtn.innerText = '☀️';
+        }
+    });
+</script>
 
 </body>
 </html>
