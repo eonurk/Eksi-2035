@@ -84,6 +84,7 @@
             color: var(--link-color);
             letter-spacing: -0.5px;
             white-space: nowrap;
+            cursor: pointer;
         }
         
         .search-container {
@@ -162,7 +163,7 @@
             cursor: pointer;
             border-left: 3px solid transparent;
         }
-        .topic-list li:hover { 
+        .topic-list li:hover, .topic-list li.active { 
             background-color: var(--hover-bg); 
             border-left-color: var(--link-color);
         }
@@ -213,6 +214,7 @@
         .entry-author {
             color: var(--link-color);
             font-weight: bold;
+            cursor: pointer;
         }
         .entry-actions {
             display: flex;
@@ -263,10 +265,10 @@
             .mobile-menu-btn { display: block; }
             
             .search-container { 
-                display: none; /* Can be toggled in a fuller version, usually hidden or icon-only on mobile headers */
+                display: none;
             }
             
-            .user-menu span:not(.theme-toggle-wrapper) { display: none; } /* Hide extra menu items on mobile */
+            .user-menu span:not(.theme-toggle-wrapper) { display: none; }
             .theme-toggle-wrapper { display: block; }
 
             .left-frame { 
@@ -293,11 +295,11 @@
 <header>
     <div class="header-left">
         <button class="mobile-menu-btn" id="menuBtn">☰</button>
-        <div class="logo">ekşi sözlük</div>
+        <div class="logo" onclick="window.location.hash = ''">ekşi sözlük</div>
     </div>
     
     <div class="search-container">
-        <input type="text" class="search-input" placeholder="başlık, #entry, @yazar">
+        <input type="text" id="searchInput" class="search-input" placeholder="başlık, #entry, @yazar">
     </div>
     
     <div class="user-menu">
@@ -314,123 +316,372 @@
 <div class="container">
     <aside class="left-frame" id="leftFrame">
         <div class="frame-header">bugün</div>
-        <ul class="topic-list">
-            <li>iphone 27 pro <span class="count">142</span></li>
-            <li>9 aralık 2035 istanbul su kesintisi <span class="count">893</span></li>
-            <li>yapay zeka vergisinin %60 olması <span class="count">45</span></li>
-            <li>neuralink taktıran dayılar <span class="count">12</span></li>
-            <li>doların 1500 lira barajını aşması <span class="count">3201</span></li>
-            <li>mars kolonisinde şırdan satmak <span class="count">5</span></li>
-            <li>chatgpt'nin cumhurbaşkanı adayı olması <span class="count">156</span></li>
-            <li>esenyurt nükleer atık tesisi <span class="count">78</span></li>
-            <li>kadıköy vapurunun uçan feribotla değişmesi <span class="count">210</span></li>
-            <li>2035 model togg <span class="count">67</span></li>
-            <li>türkiye'nin ab üyeliği süreci <span class="count">1</span></li>
-            <li>kira öder gibi oksijen tüpü almak <span class="count">33</span></li>
-            <li>suriyelilerin geri dönüş şakası <span class="count">88</span></li>
-            <li>eski internet <span class="count">412</span></li>
-            <li>metaverse tapu dairesi sırası <span class="count">23</span></li>
-            <li>fenerbahçe'nin 21 yıldır şampiyon olamaması <span class="count">1907</span></li>
+        <ul class="topic-list" id="topicList">
+            <!-- Topics will be injected here via JS -->
         </ul>
     </aside>
 
-    <main class="main-content">
-        
-        <div class="ad-banner">
-            <strong>reklam</strong><br>
-            rüya lisansınızın süresi doldu mu? uykunuzda reklamsız gezinti için hemen tıklayın.
-        </div>
-
-        <h1 class="topic-title">eski internet</h1>
-
-        <div class="entry">
-            <div class="entry-text">
-                insanların bot değil de gerçekten insan olduğu, yorumların yapay zeka tarafından değil de klavye başında terleyen ergenler tarafından yazıldığı, her şeyin "metaverse" ya da "blockchain" tabanlı olmak zorunda olmadığı o güzel dönemler.<br><br>
-                
-                artık özlenendir. şimdiki gibi düşünceni yazmadan önce "algoritma puanım düşer mi?" diye korkmazdık. <span class="bkz">(bkz: sosyal kredi sistemi)</span> gelmeden önceki son kaleydi belki de.<br><br>
-                
-                hatırlıyorum, 2024 civarında "internet çok bozuldu" derdik. meğer o zamanlar altın çağımızı yaşıyormuşuz. şimdi girmek için retina taraması yaptığın, her like'ının devlete raporlandığı, video izlemek için beynine çip onayı verdiğin bu garabet sisteme internet demek bin şahit ister. <br><br>
-                
-                keşke o günlere dönsek de yine saçma sapan tiktok videolarına maruz kalsak. en azından onları çekenler, renderlanmış <span class="bkz">(bkz: deepfake)</span> karakterler değildi.
-            </div>
-            <div class="entry-footer">
-                <div class="entry-actions">
-                    <span>paylaş</span>
-                    <span>şikayet</span>
-                </div>
-                <div class="entry-meta">
-                    <a href="#" class="entry-author">analog adam</a> 
-                    <span>09.12.2035 14:42</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="entry">
-            <div class="entry-text">
-                o zamanlar <span class="bkz">(bkz: reddit)</span> vardı, <span class="bkz">(bkz: twitter)</span> vardı. şimdi hepsi "x-corp global veri bakanlığı"na bağlandı. <br><br>
-                
-                bir de modem diye bir kutu vardı evde, ışıkları yanıp sönerdi. şimdi direkt uydu üzerinden ense köküne basıyorlar sinyali. nostalji olsun diye geçen gün hurdacıdan bi tane iphone 15 buldum, şarja taktım çalışmadı tabi. hey gidi günler.
-            </div>
-            <div class="entry-footer">
-                <div class="entry-actions">
-                    <span>paylaş</span>
-                    <span>şikayet</span>
-                </div>
-                <div class="entry-meta">
-                    <a href="#" class="entry-author">cyber_kebab</a> 
-                    <span>09.12.2035 15:01</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="entry">
-            <div class="entry-text">
-                bugünlerde entry girmek için bile yapay zeka editöründen onay bekliyoruz. eskiden imla kurallarına uymayanlara "türkçe öğretmeni misin birader" denirdi, şimdi imla hatası yaparsan sistem "düşük iq tespiti" yapıp internet hızını düşürüyor. <br><br>
-                
-                nerde o eski kaos, nerde o eski kavgalar. şimdi herkesin profilinin yanında "vatandaşlık uyum puanı" yazıyor diye kimse kimseye sövemiyor. sözlük bile tataflı oldu, yeşil tema dışında her şey değişti.
-            </div>
-            <div class="entry-footer">
-                <div class="entry-actions">
-                    <span>paylaş</span>
-                    <span>şikayet</span>
-                </div>
-                <div class="entry-meta">
-                    <a href="#" class="entry-author">nostaljik_troll</a> 
-                    <span>09.12.2035 16:20</span>
-                </div>
-            </div>
-        </div>
-
+    <main class="main-content" id="mainContent">
+        <!-- Content will be injected here via JS -->
     </main>
 </div>
 
 <script>
-    // Elements
+    // ----------------------
+    // DATA MOCK (DATABASE)
+    // ----------------------
+    const db = {
+        "eski-internet": {
+            title: "eski internet",
+            count: 412,
+            entries: [
+                {
+                    text: `insanların bot değil de gerçekten insan olduğu, yorumların yapay zeka tarafından değil de klavye başında terleyen ergenler tarafından yazıldığı o güzel dönemler.<br><br>artık özlenendir. şimdiki gibi düşünceni yazmadan önce "algoritma puanım düşer mi?" diye korkmazdık.`,
+                    author: "analog adam",
+                    date: "09.12.2035 14:42"
+                },
+                {
+                    text: `o zamanlar <span class="bkz">(bkz: reddit)</span> vardı, <span class="bkz">(bkz: twitter)</span> vardı. şimdi hepsi "x-corp global veri bakanlığı"na bağlandı.<br><br>bir de modem diye bir kutu vardı evde, ışıkları yanıp sönerdi. şimdi direkt uydu üzerinden ense köküne basıyorlar sinyali. nostalji olsun diye geçen gün hurdacıdan bi tane iphone 15 buldum, şarja taktım çalışmadı tabi. hey gidi günler.`,
+                    author: "cyber_kebab",
+                    date: "09.12.2035 15:01"
+                },
+                {
+                    text: `bugünlerde entry girmek için bile yapay zeka editöründen onay bekliyoruz. eskiden imla kurallarına uymayanlara "türkçe öğretmeni misin birader" denirdi, şimdi imla hatası yaparsan sistem "düşük iq tespiti" yapıp internet hızını düşürüyor.`,
+                    author: "nostaljik_troll",
+                    date: "09.12.2035 16:20"
+                }
+            ]
+        },
+        "iphone-27-pro": {
+            title: "iphone 27 pro",
+            count: 142,
+            entries: [
+                {
+                    text: `yine şarj aleti kutudan çıkmıyor. bu sefer telefonun kendisi de çıkmıyor, sadece hologram lisansı alıyorsunuz. 120 bin dolar verip boş kutu açtım. apple yine yapmış yapacağını.`,
+                    author: "iSheep_v2",
+                    date: "15.12.2035 09:15"
+                },
+                {
+                    text: `kamera lensleri artık arka kapağa sığmadığı için telefonun arkasında drone yuvası var. fotoğraf çekeceğin zaman drone havalanıp seni çekiyor. özellik güzel ama şarjı 3 dakika gidiyor.`,
+                    author: "teknik_servis",
+                    date: "15.12.2035 10:30"
+                }
+            ]
+        },
+        "9-aralik-2035-istanbul-su-kesintisi": {
+            title: "9 aralık 2035 istanbul su kesintisi",
+            count: 893,
+            entries: [
+                {
+                    text: `iski'den yapılan açıklamaya göre "bulutlarda bakım çalışması" varmış. arkadaş bulutun bakımı mı olur? yağmur duasına yapay zeka entegrasyonu yapıyorlar kesin. 3 gündür susuzuz, damacana suyun litresi bitcoinle yarışıyor.`,
+                    author: "susuz_yaz",
+                    date: "15.12.2035 11:00"
+                },
+                {
+                    text: `su yerine "sivılaştırılmış oksijen kapsülü" dağıtıyorlar belediyeden. tadı metal gibi. eski klorlu şebeke suyunu özleyeceğim aklıma gelmezdi.`,
+                    author: "esenyurtlu",
+                    date: "15.12.2035 12:45"
+                }
+            ]
+        },
+        "yapay-zeka-vergisi": {
+            title: "yapay zeka vergisi",
+            count: 3201,
+            entries: [
+                {
+                    text: `beynimizin %10'unu kullandığımız için geri kalan %90'lık boş alana devlet bulut depolama hizmeti kuracakmış. buna itiraz edince de "yapay zeka geliştirme fonu" adı altında maaşın yarısını kesiyorlar. <span class="bkz">(bkz: black mirror)</span> bölümü gibi ülke yemin ederim.`,
+                    author: "vergi_mukellefi_bot",
+                    date: "14.12.2035 23:50"
+                },
+                {
+                    text: `evdeki robot süpürge bile "ben de vergi mükellefiyim artık" diye grev yapıyor, salonu süpürmüyor. fişini çekicem ama sendikalı olmuş şerefsiz.`,
+                    author: "temizlik_imandandir",
+                    date: "15.12.2035 08:20"
+                }
+            ]
+        },
+        "neuralink-taktiran-dayilar": {
+            title: "neuralink taktıran dayılar",
+            count: 45,
+            entries: [
+                {
+                    text: `kahvede okey oynarken bluetooth üzerinden taş çalan dayılardır. geçen biri "beynim dondu reset atın" diye bağırıyordu, meğer güncelleme gelmiş.`,
+                    author: "genc_beyin",
+                    date: "13.12.2035 14:00"
+                },
+                {
+                    text: `bunların bir de virüs yiyen modelleri var. amcam geçen gün durup dururken rusça marş söylemeye başladı. heçkırlamışlar adamı.`,
+                    author: "siber_yegen",
+                    date: "13.12.2035 15:45"
+                }
+            ]
+        },
+        "dolarin-1500-lira-barajini-asmasi": {
+            title: "doların 1500 lira barajını aşması",
+            count: 5500,
+            entries: [
+                {
+                    text: `psikolojik sınırdı, aştık rahatladık. artık 1 dolar verip simit bile alamıyoruz ama olsun.`,
+                    author: "ekonomist_degilim_ama",
+                    date: "15.12.2035 01:00"
+                },
+                {
+                    text: `ekonomi bakanı "dolarla mı maaş alıyorsunuz?" diye sordu yine. hayır bakanım, biz maaş almıyoruz artık, direkt "yaşam kredisi" yükleniyor karta, o da ayın 3'ünde bitiyor.`,
+                    author: "maasli_kole",
+                    date: "15.12.2035 09:00"
+                }
+            ]
+        },
+        "mars-kolonisinde-sirdan-satmak": {
+            title: "mars kolonisinde şırdan satmak",
+            count: 5,
+            entries: [
+                {
+                    text: `elon musk'ın kesinlikle izin vermeyeceği girişim. zaten rokette kokuyor diye pastırmayı yasakladılar. ama <span class="bkz">(bkz: adana)</span>lılar bir yolunu bulur, o kraterlerin arasında seyyar tezgahı açar.`,
+                    author: "uzay_kebap",
+                    date: "10.12.2035 22:15"
+                }
+            ]
+        },
+        "chatgpt-nin-cumhurbaskani-adayi-olmasi": {
+            title: "chatgpt'nin cumhurbaşkanı adayı olması",
+            count: 156,
+            entries: [
+                {
+                    text: `vaatleri çok mantıklı. "herkese bedava gpu", "sınırsız internet" ve "daha az bug'lı bir hayat". mevcut siyasetçilerden daha samimi geldi bana. en azından "bilmiyorum" diyebiliyor.`,
+                    author: "kararsiz_secmen",
+                    date: "11.12.2035 13:00"
+                },
+                {
+                    text: `miting yapmasına gerek yok, direkt herkesin rüyasına girip propaganda yapıyor. teknoloji çok gelişti azizim.`,
+                    author: "eski_kafali",
+                    date: "11.12.2035 14:20"
+                }
+            ]
+        },
+        "esenyurt-nukleer-atik-tesisi": {
+            title: "esenyurt nükleer atık tesisi",
+            count: 78,
+            entries: [
+                {
+                    text: `zaten normalde de radyasyon yayiyordu ilce, resmiyete dökülmesi iyi olmuş.`,
+                    author: "sehir_plancisi",
+                    date: "12.12.2035 09:00"
+                },
+                {
+                    text: `kiralar düşer diye sevindik ama mutant emlakçılar "manzaralı" diye daha çok istiyor.`,
+                    author: "kiraci_teroru",
+                    date: "12.12.2035 10:15"
+                }
+            ]
+        },
+        "kadikoy-vapurunun-ucan-feribotla-degismesi": {
+            title: "kadıköy vapurunun uçan feribotla değişmesi",
+            count: 210,
+            entries: [
+                {
+                    text: `çay simit keyfi bitti. yukarıda rüzgardan simit uçuyor, martılar da siborg olduğu için simidi havada lazerle yakıyor. eski romantizm kalmadı.`,
+                    author: "romantik_serseri",
+                    date: "13.12.2035 16:00"
+                }
+            ]
+        },
+        "2035-model-togg": {
+            title: "2035 model togg",
+            count: 67,
+            entries: [
+                {
+                    text: `yerli ve milli uçan arabamız. havada giderken mehter marşı çalıyor, kapatma tuşu yok.`,
+                    author: "yerli_oto",
+                    date: "14.12.2035 11:30"
+                }
+            ]
+        },
+        "turkiyenin-ab-uyeligi-sureci": {
+            title: "türkiye'nin ab üyeliği süreci",
+            count: 1,
+            entries: [
+                {
+                    text: `son fasıl da açıldı: "galaktik federasyona uyum süreci". ab dağılalı 5 yıl oldu biz hala girmeye çalışıyoruz, bu azim takdire şayan.`,
+                    author: "brüxelles_lahana",
+                    date: "15.12.2035 08:00"
+                }
+            ]
+        },
+        "kira-oder-gibi-oksijen-tupu-almak": {
+            title: "kira öder gibi oksijen tüpü almak",
+            count: 33,
+            entries: [
+                {
+                    text: `kampanyayla 120 ay vadeyle aldım. nefes almak lüks oldu. <span class="bkz">(bkz: orman yangınları)</span> sağ olsun ciğer kalmadı.`,
+                    author: "nefes_darligi",
+                    date: "14.12.2035 19:45"
+                }
+            ]
+        },
+        "suriyelilerin-geri-donus-sakasi": {
+            title: "suriyelilerin geri dönüş şakası",
+            count: 88,
+            entries: [
+                {
+                    text: `her sene 1 nisan'da "gidiyoruz" diyorlar, biz de inanıyoruz.`,
+                    author: "saf_vatandas",
+                    date: "01.04.2035 00:01"
+                }
+            ]
+        },
+        "metaverse-tapu-dairesi-sirasi": {
+            title: "metaverse tapu dairesi sırası",
+            count: 23,
+            entries: [
+                {
+                    text: `gerçek dünyada ev alamadık bari sanal dünyadan piksel alalım dedik, orada da sıra var. avatarım 3 saattir kuyrukta bekliyor, ben tuvalete gittim geldim hala 45. sıradayız. rüşvet olarak bitcoin teklif ettim, memur npc "kripto kabul etmiyoruz, etherium ver" dedi.`,
+                    author: "sanal_emlak",
+                    date: "15.12.2035 10:00"
+                }
+            ]
+        },
+        "fenerbahcenin-21-yildir-sampiyon-olamamasi": {
+            title: "fenerbahçe'nin 21 yıldır şampiyon olamaması",
+            count: 1907,
+            entries: [
+                {
+                    text: `ali koç'un torunu başkan oldu hala "seneye kesin bizde" diyorlar. bu sene ligi robot hakemler yönetti, yine olmadı. sorun bizde galiba.`,
+                    author: "hasta_fenerli",
+                    date: "15.12.2035 21:00"
+                },
+                {
+                    text: `artık şampiyonluk kupasını müzede hologram olarak gösteriyorlar. "olsaydı böyle dururdu" diye. vizyon desen var.`,
+                    author: "gsl_aslan",
+                    date: "15.12.2035 21:45"
+                }
+            ]
+        }
+    };
+
+    // ----------------------
+    // LOGIC
+    // ----------------------
+    const topicListEl = document.getElementById('topicList');
+    const mainContentEl = document.getElementById('mainContent');
     const menuBtn = document.getElementById('menuBtn');
     const leftFrame = document.getElementById('leftFrame');
     const overlay = document.getElementById('overlay');
     const themeBtn = document.getElementById('themeBtn');
     const body = document.body;
+    const searchInput = document.getElementById('searchInput');
 
-    // Mobile Menu Logic
-    function toggleMenu() {
-        leftFrame.classList.toggle('active');
-        overlay.classList.toggle('active');
+    // 1. Render Sidebar
+    function renderSidebar() {
+        let html = '';
+        for (const [key, val] of Object.entries(db)) {
+            html += `<li onclick="goToTopic('${key}')" id="nav-${key}">
+                ${val.title} <span class="count">${val.count}</span>
+            </li>`;
+        }
+        topicListEl.innerHTML = html;
     }
 
-    menuBtn.addEventListener('click', toggleMenu);
-    overlay.addEventListener('click', toggleMenu);
+    // 2. Render Main Content (Topic Entries)
+    function renderTopic(key) {
+        const topic = db[key];
+        
+        // Update Active State in Sidebar
+        document.querySelectorAll('.topic-list li').forEach(li => li.classList.remove('active'));
+        const activeItem = document.getElementById(`nav-${key}`);
+        if(activeItem) activeItem.classList.add('active');
 
-    // Close menu when clicking a link in sidebar (mobile UX)
-    document.querySelectorAll('.topic-list li').forEach(item => {
-        item.addEventListener('click', () => {
-            if(window.innerWidth <= 768) {
-                toggleMenu();
+        if (!topic) {
+            // 404 Case or Homepage
+            renderHome();
+            return;
+        }
+
+        // Scroll top
+        mainContentEl.scrollTop = 0;
+        if(window.innerWidth <= 768) {
+            // Close mobile menu if open
+            leftFrame.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // Generate Entries HTML
+        let entriesHtml = '';
+        topic.entries.forEach(entry => {
+            entriesHtml += `
+            <div class="entry">
+                <div class="entry-text">
+                    ${entry.text}
+                </div>
+                <div class="entry-footer">
+                    <div class="entry-actions">
+                        <span>paylaş</span>
+                        <span>şikayet</span>
+                    </div>
+                    <div class="entry-meta">
+                        <a class="entry-author">${entry.author}</a> 
+                        <span>${entry.date}</span>
+                    </div>
+                </div>
+            </div>`;
+        });
+
+        const html = `
+            <div class="ad-banner">
+                 <strong>reklam</strong><br>
+                 rüya lisansınızın süresi doldu mu? uykunuzda reklamsız gezinti için hemen tıklayın.
+            </div>
+            <h1 class="topic-title">${topic.title}</h1>
+            ${entriesHtml}
+        `;
+        
+        mainContentEl.innerHTML = html;
+        document.title = `${topic.title} - ekşi sözlük`;
+    }
+
+    // 3. Render Homepage (Default)
+    function renderHome() {
+        // Just show the first topic or a welcome message
+        // For 'eksi' vibe, usually it opens a popular topic or "günün olayı"
+        // Let's open "eski internet" as default
+        renderTopic('eski-internet');
+    }
+
+    // 4. Navigation Logic
+    function goToTopic(key) {
+        window.location.hash = key;
+    }
+
+    function handleHashChange() {
+        const hash = window.location.hash.substring(1); // remove #
+        if (hash) {
+            renderTopic(hash);
+        } else {
+            renderHome();
+        }
+    }
+
+    // 5. Search Logic (Simple Filter)
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const items = document.querySelectorAll('.topic-list li');
+        items.forEach(item => {
+            if(item.textContent.toLowerCase().includes(term)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
             }
         });
     });
 
-    // Dark Mode Logic
+    // 6. Mobile Menu & Theme Logic (Existing)
+    function toggleMenu() {
+        leftFrame.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+    menuBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', toggleMenu);
+
     themeBtn.addEventListener('click', () => {
         const isDark = body.getAttribute('data-theme') === 'dark';
         if (isDark) {
@@ -441,6 +692,12 @@
             themeBtn.innerText = '☀️';
         }
     });
+
+    // Init
+    window.addEventListener('hashchange', handleHashChange);
+    renderSidebar();
+    handleHashChange(); // Handle initial load
+
 </script>
 
 </body>
