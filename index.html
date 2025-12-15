@@ -186,6 +186,21 @@
             font-size: 11px;
             margin-left: 5px;
         }
+        
+        /* Mobile User Menu (in Sidebar) */
+        .mobile-user-menu {
+            display: none;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+        .mobile-user-menu span {
+            display: block;
+            padding: 5px 0;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
         /* MAIN CONTENT */
         .main-content {
@@ -322,10 +337,9 @@
             
             .search-container { display: none; }
             
-            /* Show icons on mobile for user menu instead of hiding */
-            .user-menu { gap: 10px; }
-            .user-menu span { display: block; }
-            .user-menu-text { display: none; } /* Hide text "mesaj", show icon if we had one, but keeping text small is ok for now or abbreviations */
+            /* Hide top user menu on mobile, move to sidebar */
+            .user-menu span:not(.theme-toggle-wrapper) { display: none; }
+            .mobile-user-menu { display: block; }
 
             .left-frame { 
                 position: fixed;
@@ -373,6 +387,14 @@
 
 <div class="container">
     <aside class="left-frame" id="leftFrame">
+        <!-- Mobile User Menu -->
+        <div class="mobile-user-menu">
+             <span onclick="window.location.hash = 'special-profile'">👤 ben</span>
+             <span onclick="window.location.hash = 'special-messages'">✉️ mesajlar (2)</span>
+             <span onclick="window.location.hash = 'special-events'">🔔 olaylar</span>
+             <span onclick="window.location.hash = 'special-settings'">⚙️ ayarlar</span>
+        </div>
+
         <div class="frame-header">bugün</div>
         <ul class="topic-list" id="topicList">
             <!-- Topics will be injected here via JS -->
@@ -404,6 +426,16 @@
                     text: `o zamanlar <span class="bkz">(bkz: reddit)</span> vardı, <span class="bkz">(bkz: twitter)</span> vardı. şimdi hepsi "x-corp global veri bakanlığı"na bağlandı.<br><br>bir de modem diye bir kutu vardı evde, ışıkları yanıp sönerdi. şimdi direkt uydu üzerinden ense köküne basıyorlar sinyali. nostalji olsun diye geçen gün hurdacıdan bi tane iphone 15 buldum, şarja taktım çalışmadı tabi. hey gidi günler.`,
                     author: "cyber_kebab",
                     date: "09.12.2035 15:01"
+                },
+                {
+                    text: `google diye bir şey vardı, bir şey arardın ve sana sonuç verirdi. şimdi arama yapınca "bunu sormak istediğine emin misin? vatandaşlık puanın yetersiz" diyor. hey gidi özgürlük.`,
+                    author: "yasli_kurt_99",
+                    date: "16.12.2035 08:00"
+                },
+                 {
+                    text: `eskiden youtube'da reklam izlerdik ama en azından rüyamıza girmezlerdi. şimdi gece uyurken bilinçaltıma kola reklamı sokuyorlar, sabah susamış uyanıyorum.`,
+                    author: "uykusuz_herif",
+                    date: "16.12.2035 09:12"
                 }
             ]
         },
@@ -421,6 +453,16 @@
                     text: `kamera lensleri artık arka kapağa sığmadığı için telefonun arkasında drone yuvası var. fotoğraf çekeceğin zaman drone havalanıp seni çekiyor. özellik güzel ama şarjı 3 dakika gidiyor.`,
                     author: "teknik_servis",
                     date: "15.12.2035 10:30"
+                },
+                {
+                    text: `telepatik mesajlaşma özelliği bozuk. karıma "eve geliyorum" diye düşündüm, yanlışlıkla baldıza gitmiş mesaj. apple store "beyniniz uyumsuz" dedi, değişim yapmadılar. rezalet.`,
+                    author: "magdur_koca",
+                    date: "16.12.2035 11:20"
+                },
+                {
+                    text: `bataryası nükleer olduğu için radyoaktif sızıntı yapıyormuş. telefon ısınıyor sandım meğer elim eriyormuş. harika ısınma teknolojisi, kışın doğalgaz yakmıyoruz.`,
+                    author: "radyoaktif_genclik",
+                    date: "16.12.2035 14:05"
                 }
             ]
         },
@@ -433,6 +475,11 @@
                     text: `iski'den yapılan açıklamaya göre "bulutlarda bakım çalışması" varmış. arkadaş bulutun bakımı mı olur? yağmur duasına yapay zeka entegrasyonu yapıyorlar kesin. 3 gündür susuzuz, damacana suyun litresi bitcoinle yarışıyor.`,
                     author: "susuz_yaz",
                     date: "15.12.2035 11:00"
+                },
+                {
+                    text: `hamam kültürüne geri dönelim dedik, hamamlar da "susuz buhar teknolojisi"ne geçmiş. mikrodalga fırın gibi pişip çıktık, kirler duruyor.`,
+                    author: "temiz_delisi",
+                    date: "16.12.2035 10:45"
                 }
             ]
         },
@@ -445,6 +492,11 @@
                     text: `beynimizin %10'unu kullandığımız için geri kalan %90'lık boş alana devlet bulut depolama hizmeti kuracakmış. buna itiraz edince de "yapay zeka geliştirme fonu" adı altında maaşın yarısını kesiyorlar. <span class="bkz">(bkz: black mirror)</span> bölümü gibi ülke yemin ederim.`,
                     author: "vergi_mukellefi_bot",
                     date: "14.12.2035 23:50"
+                },
+                 {
+                    text: `siri ile sohbet ederken "devlet baba" dediğim için otomatik vergi kesildi hesabımdan. meğer "duygusal bağ vergisi" varmış. robota da aşık olmayalım mı arkadaş?`,
+                    author: "yalniz_android",
+                    date: "16.12.2035 13:00"
                 }
             ]
         },
@@ -457,6 +509,11 @@
                     text: `kahvede okey oynarken bluetooth üzerinden taş çalan dayılardır. geçen biri "beynim dondu reset atın" diye bağırıyordu, meğer güncelleme gelmiş.`,
                     author: "genc_beyin",
                     date: "13.12.2035 14:00"
+                },
+                {
+                    text: `otobüste ayakta uyuyan dayının gözünden qr kod geçiyordu, meğer reklam izleyerek emekli maaşına katkı yapıyormuş. helal olsun dayı, çalışkan nesil bunlar.`,
+                    author: "gozluklu_adam",
+                    date: "16.12.2035 09:50"
                 }
             ]
         },
@@ -469,6 +526,11 @@
                     text: `psikolojik sınırdı, aştık rahatladık. artık 1 dolar verip simit bile alamıyoruz ama olsun.`,
                     author: "ekonomist_degilim_ama",
                     date: "15.12.2035 01:00"
+                },
+                {
+                    text: `dün maaşımı aldım, eve gidene kadar para değer kaybettiği için dolmuşa yetmedi. yürüyerek gittim. spor oldu, sağlık bakanlığına teşekkürler.`,
+                    author: "saglikli_yasam",
+                    date: "16.12.2035 08:30"
                 }
             ]
         },
@@ -481,6 +543,11 @@
                     text: `elon musk'ın kesinlikle izin vermeyeceği girişim. zaten rokette kokuyor diye pastırmayı yasakladılar. ama <span class="bkz">(bkz: adana)</span>lılar bir yolunu bulur, o kraterlerin arasında seyyar tezgahı açar.`,
                     author: "uzay_kebap",
                     date: "10.12.2035 22:15"
+                },
+                {
+                    text: `yerçekimi az olduğu için şırdanlar havada süzülüyor, yemesi çok zor. ama oksijen maskesinin altından o kokuyu alınca dünyayı unutuyorsun.`,
+                    author: "marsli_gurme",
+                    date: "16.12.2035 19:00"
                 }
             ]
         },
@@ -606,6 +673,11 @@
                     text: `deprem çantasına artık konserve değil, powerbank ve vr gözlük koyuyoruz. enkaz altında kalırsak bari metaverse'e girip zaman geçirelim diye.`,
                     author: "panik_atak",
                     date: "16.12.2035 03:00"
+                },
+                 {
+                    text: `kentsel dönüşüm kapsamında evimizi yıktılar, yerine "havada asılı kapsül daireler" yaptılar. depremden etkilenmiyor ama rüzgarda beşik gibi sallanıyor. kusmaktan helak olduk.`,
+                    author: "kentsel_donusum",
+                    date: "16.12.2035 15:45"
                 }
             ]
         },
@@ -635,6 +707,11 @@
                     text: `bagaj hakkı çok düşük. yanına sadece 1 çanta alabiliyorsun, o da moleküllerine ayrılırken bazen kayboluyor. geçen bavulumun yarısı eminönü'nde kaldı.`,
                     author: "gezgin_atom",
                     date: "13.12.2035 10:00"
+                },
+                {
+                    text: `ucuz olsun diye "standart paket" ışınlanma aldım, kolum bacağımdan 5 dakika sonra geldi. bir daha tövbe, parası neyse verip vip ışınlanıcam.`,
+                    author: "yarim_adam",
+                    date: "16.12.2035 12:20"
                 }
             ]
         },
@@ -652,6 +729,11 @@
                     text: `benimki geçen gün "sistem güncellemesi yapıyorum" diyip 4 saat dondu kaldı. öylece duvara bakıp durdu. korkunçtu.`,
                     author: "sanal_ask",
                     date: "15.12.2035 23:45"
+                },
+                {
+                    text: `annemle tanıştırayım dedim, kadıncağız "gelinim çok soğuk" dedi. "anne metal o metal" diyemedim. elini öptürecektik kısa devre yaptı.`,
+                    author: "huzunlu_damat",
+                    date: "16.12.2035 14:00"
                 }
             ]
         },
