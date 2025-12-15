@@ -115,6 +115,12 @@
         .user-menu span { cursor: pointer; position: relative; }
         .user-menu span:hover { color: var(--link-color); }
         
+        #citizenshipScore {
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--link-color);
+        }
+        
         /* Badge for notifications */
         .badge {
             background-color: #5fba57;
@@ -496,9 +502,17 @@
             
             .search-container { display: none; }
             
-            /* Hide top user menu on mobile, move to sidebar */
-            .user-menu span:not(.theme-toggle-wrapper) { display: none; }
+            /* Hide top user menu on mobile, move to sidebar, but keep theme toggle AND score */
+            .user-menu span:not(.theme-toggle-wrapper):not(#citizenshipScore) { display: none; }
             .mobile-user-menu { display: block; }
+
+            /* Adjust score font size for mobile to fit */
+            #citizenshipScore {
+                font-size: 11px;
+                padding: 2px 5px;
+                background: rgba(0,0,0,0.05);
+                border-radius: 4px;
+            }
 
             .left-frame { 
                 position: fixed;
@@ -535,7 +549,7 @@
         <span class="theme-toggle-wrapper">
             <button class="theme-toggle" id="themeBtn">🌙</button>
         </span>
-        <span id="citizenshipScore">puan: 100</span>
+        <span id="citizenshipScore" onclick="window.location.hash = 'vatandaslik-puani'">puan: 100</span>
         <span onclick="window.location.hash = 'special-profile'">ben</span>
         <span onclick="window.location.hash = 'special-messages'">
             mesaj <div class="badge">2</div>
@@ -1183,6 +1197,34 @@
                     text: `uzay istasyonunda mangal yapmışlar, duman sensörleri çalışınca istasyon kendini imha moduna almış. zor kurtarmışlar.`,
                     author: "uzay_mangal",
                     date: "17.12.2035 15:20"
+                }
+            ]
+        },
+
+        "vatandaslik-puani": {
+            type: 'topic',
+            title: "vatandaşlık puanı",
+            count: 85000000,
+            entries: [
+                {
+                    text: `2030 yılında yürürlüğe giren "dijital uyum yasası" kapsamında her bireye atanan dinamik skor.<br><br>resmi açıklamaya göre: "toplumsal düzeni sağlamak, vergi bilincini artırmak ve dijital ayak izini kontrol altına almak" içinmiş. yersen.<br><br>nasıl hesaplanıyor?<br>- devlet övmek: +5 puan<br>- yerli araba paylaşımı: +10 puan<br>- vergi ödemek: +1 puan (o da lütfederlerse)<br>- "ekonomi kötü" yazmak: -50 puan<br>- reklam engellemek: -10 puan<br><br>80 puanın altına düşerseniz internet hızınız 56k modeme sabitleniyor. 50'nin altına düşerseniz akıllı buzdolabınız kapağını kilitliyor. Allah korusun 0 olursa direkt metaverse hapsi.`,
+                    author: "sistem_yoneticisi",
+                    date: "01.01.2035 00:00"
+                },
+                {
+                    text: `geçen gün yanlışlıkla "bu domates niye pahalı" diye sesli düşündüm, ortam dinlemesine takılmışım. puanım 95'ten 85'e düştü. artık evde pantomim yaparak anlaşıyoruz hanımla.`,
+                    author: "sessiz_vatandas",
+                    date: "17.12.2035 14:20"
+                },
+                {
+                    text: `puanım artsın diye günde 5 vakit e-devlet'e girip çıkıyorum. "sistemi meşgul etmekten" ceza kestiler, puanım daha da düştü. ne yapsak suç arkadaş.`,
+                    author: "magdur_user",
+                    date: "17.12.2035 16:45"
+                },
+                {
+                    text: `karanlık mod kullananların puanı daha hızlı düşüyormuş, çünkü "gizleyecek bir şeyleri var" algısı oluşuyormuş. kör olduk beyaz ekrana baka baka ama vatan sağ olsun.`,
+                    author: "aydinlik_gelecek",
+                    date: "17.12.2035 18:00"
                 }
             ]
         },
